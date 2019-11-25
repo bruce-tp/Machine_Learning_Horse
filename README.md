@@ -1,8 +1,8 @@
-# Predictive Modeling: Hong Kong Horse Racing
-With supervised machine learning models, predict the winning horse with data of various features. 
+# Hong Kong Horse Racing Prediction Modeling: 
+Using supervised machine learning models to predict the winning horse with different features.
 
 ## Data Source
-Data from [Kaggle](https://www.kaggle.com/gdaley/hkracing) user Graham Daley, containing two sets of data about horse information and race information. 
+Data from [Kaggle](https://www.kaggle.com/gdaley/hkracing)
 
 ## Features Explanation
 > won - whether horse won (1) or otherwise (0)<br/>
@@ -24,22 +24,21 @@ config - race track configuration, mostly related to the position of the inside 
 going - track condition. For more details, see the HKJC website.
 
 ## Data Preprocessing
-![Labels](/images/labels.png)<br/>
+<br/>
 As the data is extremely skewed, resampling library [`imblearn`](https://imbalanced-learn.readthedocs.io/en/stable/index.html) is used. Under-sampling method RandomUnderSampler (RUS) and over-sampling method Synthetic Minority Over-sampling Technique (SMOTE) are used for different model experiments. 
 
 ## Modeling
 <b>1. KNeighborsClassifier (kNN Classifier)</b>
    
-   For this dataset, the target is to minimize False Positive, which means `prediction: win, actual: lose`. So the metric is set to be precision score of the positive class (1), which is the win label. Thus, find out the optimized k-value with for loops. 
+   Our ultimate target is to avoid False Positive (prediction = win, actual =  lose) as much as possible. So the metric is set to be precision score of the positive class (1), which is the win label. Thus, find out the optimized k-value with for loops. 
    
-   ![knn_ori](/images/knn_ori.png)![knn_rus](/images/knn_rus.png)![knn_sm](/images/knn_sm.png)
+
 
 <b>2. LightGBM</b>
    
    Building a fast gradient boosting framework with adjusting the optimized threshold value to obtain the precision score of the positive class (1) as high as possible. 
    
-   <img src="/images/lightgbm_ori.png" alt="top10_ori" width=400><img src="/images/lightgbm_rus.png" alt="top10_rus" width=400>
-   <img src="/images/lightgbm_smote.png" alt="top10_smote" width=400><br/>
+
    Top 10 important features are shown, win odds and place odds are particularly ranked highly for all of the models. 
 
 ## Training Summary
@@ -77,7 +76,7 @@ With data for one of the races in the dataset (which is excluded in training the
       macro avg       0.75      0.96      0.81        14
    weighted avg       0.96      0.93      0.94        14
    ```
-   ![knn_rus_cm](/images/knn_rus_cm.png)
+
 
 <b>2. LightGBM</b>
 
@@ -94,23 +93,15 @@ With data for one of the races in the dataset (which is excluded in training the
       macro avg       1.00      1.00      1.00        14
    weighted avg       1.00      1.00      1.00        14
    ```
-   ![knn_lgb](/images/knn_lgb.png)
 
-## Things to be Improved
-* Correlation between features is ignored. 
-* Feature scaling was not performed for different range of numeric values. 
-* One-hot encoding was not performed and just keeping the numeric values for some categorical features such as `draw` and `race_class`. 
-* Finetuning of hyperparameters for kNN classifier models is ignored. GridSearchCV can be performed to experiment better results. 
-* The volume of test data is small, so the highly-accurate prediction result is more of luckiness. More data can be used to do the testing experiment. 
 
-## Detailed Presentation
-* Check out complete workflow with [Jupyter Notebook Slides](./code/slides).
-* Check out complete code with [Jupyter Notebook](./code). 
 
-## Skills Acquired
-* Pandas: e.g. data cleaning and data imputation, one-hot encoding for categorical features
-* Scikit-learn: e.g. fine-tuning hyperparameters of the training models, setting metrics in evaluating models
-* Joblib: saving and loading models
 
-## Acknowledgements
-LightGBM code reference from Medium [article](https://medium.com/@pushkarmandot/https-medium-com-pushkarmandot-what-is-lightgbm-how-to-implement-it-how-to-fine-tune-the-parameters-60347819b7fc) by Pushkar Mandot, and confusion matrix plot code reference from [Stack Overflow](https://stackoverflow.com/questions/20998083/show-the-values-in-the-grid-using-matplotlib) user Joe Kington. Thank you coders for sharing your experience! =]
+
+
+## Analytic Tools Used
+* Pandas: e.g. data cleaning, one-hot encoding for categorical features
+* Scikit-learn: KNN and LightGBM
+
+## Reference
+LightGBM code reference from Medium [article](https://medium.com/@pushkarmandot/https-medium-com-pushkarmandot-what-is-lightgbm-how-to-implement-it-how-to-fine-tune-the-parameters-60347819b7fc) by Pushkar Mandot, and confusion matrix plot code reference from [Stack Overflow](https://stackoverflow.com/questions/20998083/show-the-values-in-the-grid-using-matplotlib)
